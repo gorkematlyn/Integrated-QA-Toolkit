@@ -1,0 +1,102 @@
+{
+  "name": "integrated-qa-toolkit",
+  "productName": "Integrated QA Toolkit",
+  "version": "0.1.0",
+  "description": "Integrated QA Toolkit - A cross-platform desktop application combining essential QA tools",
+  "homepage": "./",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "concurrently \"npm run tailwind:dev\" \"electron .\" \"cross-env BROWSER=none npm run start-react\"",
+    "start-react": "react-scripts start",
+    "build": "node icon-setup.js && npm run tailwind:build && react-scripts build",
+    "build-win": "npm run build && node portable-build.js",
+    "build-mac": "npm run build && electron-builder --mac",
+    "tailwind:dev": "tailwindcss -i ./src/index.css -o ./src/tailwind.css --watch",
+    "tailwind:build": "tailwindcss -i ./src/index.css -o ./src/tailwind.css",
+    "setup-python": "node install-python.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axe-core": "^4.7.0",
+    "electron-is-dev": "^2.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^5.5.0",
+    "react-router-dom": "^6.15.0",
+    "styled-components": "^6.0.7"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.16",
+    "concurrently": "^8.2.1",
+    "cross-env": "^7.0.3",
+    "electron": "^25.5.0",
+    "electron-builder": "^24.6.3",
+    "electron-packager": "^17.1.2",
+    "postcss": "^8.4.31",
+    "react-scripts": "^5.0.1",
+    "tailwindcss": "^3.3.0"
+  },
+  "build": {
+    "appId": "com.qa-toolkit.app",
+    "productName": "Integrated QA Toolkit",
+    "files": [
+      "build/**/*",
+      "electron/**/*",
+      "node_modules/**/*",
+      "install_python_deps.py",
+      "install_python_deps.sh",
+      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}"
+    ],
+    "extraResources": [
+      {
+        "from": "build",
+        "to": "build",
+        "filter": [
+          "**/*.png",
+          "**/*.ico"
+        ]
+      }
+    ],
+    "extraMetadata": {
+      "main": "electron/main.js"
+    },
+    "asarUnpack": [
+      "install_python_deps.py",
+      "install_python_deps.sh"
+    ],
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    },
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "build/icons/icon.icns",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false
+    },
+    "win": {
+      "target": [
+        "portable"
+      ],
+      "icon": "build/icons/icon.ico"
+    }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
